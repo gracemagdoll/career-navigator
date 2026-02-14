@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Career Navigator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="galaxy"></div>
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
+
+<div class="shooting-star"></div>
+<div class="shooting-star s2"></div>
+<div class="shooting-star s3"></div>
+<div class="container">
+    <h1>career navigator</h1>
+    <p class="tagline">Analyze your skills. Align with industry. Accelerate your career.</p>
+
+    <form method="POST">
+        <label>Enter Your Skills (comma separated)</label>
+        <input type="text" name="skills" required>
+
+        <label>Select Dream Role</label>
+        <select name="role">
+            {% for role in roles %}
+                <option value="{{ role }}">{{ role }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Analyze Career</button>
+    </form>
+
+    {% if readiness_score is not none %}
+        <div class="results">
+            <h2>Career Readiness Score</h2>
+            <div class="circle" style="--percent: {{ readiness_score }}">
+
+    <div class="inner">
+        {{ readiness_score }}%
+    </div>
+</div>
+
+            <h3>Missing Skills:</h3>
+            <ul>
+                {% for skill in missing_skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+<h3>30-Day Action Plan</h3>
+<div class="planner">
+    <div class="week">
+        <h4>Week 1 – Foundations</h4>
+        <p>Understand core concepts of the selected role. Study basics and build small examples.</p>
+    </div>
+
+    <div class="week">
+        <h4>Week 2 – Skill Building</h4>
+        <p>Practice missing skills. Complete 2–3 small hands-on projects.</p>
+    </div>
+
+    <div class="week">
+        <h4>Week 3 – Real Projects</h4>
+        <p>Build one strong portfolio project related to your dream role.</p>
+    </div>
+
+    <div class="week">
+        <h4>Week 4 – Interview Prep</h4>
+        <p>Prepare resume, practice interview questions, and refine your portfolio.</p>
+    </div>
+</div>
+
+        </div>
+    {% endif %}
+
+</div>
+<script>
+function createShootingStar() {
+    const star = document.createElement("div");
+    star.classList.add("shooting-star");
+
+    // Random starting side
+    const startSide = Math.floor(Math.random() * 4);
+
+    let startX, startY, angle;
+
+    if (startSide === 0) { // Left
+        startX = -100;
+        startY = Math.random() * window.innerHeight;
+        angle = 30 + Math.random() * 40;
+    } else if (startSide === 1) { // Right
+        startX = window.innerWidth + 100;
+        startY = Math.random() * window.innerHeight;
+        angle = 210 + Math.random() * 40;
+    } else if (startSide === 2) { // Top
+        startX = Math.random() * window.innerWidth;
+        startY = -100;
+        angle = 120 + Math.random() * 40;
+    } else { // Bottom
+        startX = Math.random() * window.innerWidth;
+        startY = window.innerHeight + 100;
+        angle = 300 + Math.random() * 40;
+    }
+
+    star.style.left = startX + "px";
+    star.style.top = startY + "px";
+    star.style.transform = `rotate(${angle}deg)`;
+
+    document.body.appendChild(star);
+
+    // Animate movement
+    const distance = 1500;
+    const duration = 1000 + Math.random() * 1000;
+
+    star.animate([
+       { transform: `translate(0,0) rotate(${angle}deg) scale(1.2)`, opacity: 1 },
+       { transform: `translate(${distance}px, ${distance}px) rotate(${angle}deg) scale(0.8)`, opacity: 0 }
+
+            ], {
+        duration: duration,
+        easing: "linear"
+    });
+
+    setTimeout(() => {
+        star.remove();
+    }, duration);
+}
+
+// Create stars randomly
+setInterval(createShootingStar, 200);
+
+</script>
+
+</body>
+</html>
