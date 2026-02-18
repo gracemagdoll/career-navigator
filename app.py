@@ -21,19 +21,21 @@ def index():
     missing_skills = []
     selected_role = None
 
-  if request.method == "POST":
-    user_skills = request.form["skills"].split(",")
-    selected_role = request.form["role"]
-    required = role_skills[selected_role]
+    if request.method == "POST":
+        user_skills = request.form["skills"].split(",")
+        selected_role = request.form["role"]
+        required = role_skills[selected_role]
 
-    user_skills = [s.strip().lower() for s in user_skills]
-    required_lower = [r.lower() for r in required]
+        user_skills = [s.strip().lower() for s in user_skills]
+        required_lower = [r.lower() for r in required]
 
-    missing_skills = [required[i] for i in range(len(required))
-                      if required_lower[i] not in user_skills]
+        missing_skills = [
+            required[i] for i in range(len(required))
+            if required_lower[i] not in user_skills
+        ]
 
-    matched = len(required) - len(missing_skills)
-    readiness_score = int((matched / len(required)) * 100)
+        matched = len(required) - len(missing_skills)
+        readiness_score = int((matched / len(required)) * 100)
 
     return render_template(
         "index.html",
